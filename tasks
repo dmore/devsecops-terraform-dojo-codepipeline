@@ -43,7 +43,11 @@ function func_assume_automation_role_idempotent() {
 function func_tf_init() {
   account_id=$(aws sts get-caller-identity --query Account --output text)
   bucket="${project_name}-terraform-states-${account_id}"
-  terraform init --reconfigure --backend-config bucket=${bucket} --backend-config key=${MY_ENVIRONMENT}/${project_name}-${MY_ENVIRONMENT}.tfstate --backend-config region=${AWS_DEFAULT_REGION} --backend-config dynamodb_table="${project_name}-terraform-lock"
+  terraform init --reconfigure \
+    --backend-config bucket=${bucket} \
+    --backend-config key=${MY_ENVIRONMENT}/${project_name}-${MY_ENVIRONMENT}.tfstate \
+    --backend-config region=${AWS_DEFAULT_REGION} \
+    --backend-config dynamodb_table="${project_name}-terraform-lock"
 }
 
 command="$1"
@@ -77,7 +81,12 @@ case "${command}" in
       fi
       cd cicd/terraform-pipeline/
 
-      terraform init --reconfigure --backend-config bucket=${bucket} --backend-config key=${project_name}-cicd.tfstate --backend-config region=${AWS_DEFAULT_REGION} --backend-config dynamodb_table="${project_name}-terraform-lock"
+      terraform init --reconfigure \
+        --backend-config bucket=${bucket} \
+        --backend-config key=${project_name}-cicd.tfstate \
+        --backend-config region=${AWS_DEFAULT_REGION} \
+        --backend-config dynamodb_table="${project_name}-terraform-lock"
+        
       if [[ "${destroy}" == "destroy" ]]; then
         echo "Destroying CICD pipeline"
         terraform plan -out cicd.tfplan -destroy

@@ -23,8 +23,16 @@ phases:
     run-as: codebuild-user
     commands:
       # get artifacts
-      - bash -c 'if [[ "${MY_ENVIRONMENT}" == "testing" ]]; then set -x; cp $CODEBUILD_SRC_DIR_TestingTerraformPlan_output/terraform/*.tfplan $CODEBUILD_SRC_DIR/terraform/; set +x; fi'
-      - bash -c 'if [[ "${MY_ENVIRONMENT}" == "production" ]]; then set -x; cp $CODEBUILD_SRC_DIR_ProductionTerraformPlan_output/terraform/*.tfplan $CODEBUILD_SRC_DIR/terraform/; set +x; fi'
+      - bash -c 'if [[ "${MY_ENVIRONMENT}" == "testing" ]]; 
+                  then set -x; 
+                    cp $CODEBUILD_SRC_DIR_TestingTerraformPlan_output/terraform/*.tfplan $CODEBUILD_SRC_DIR/terraform/; 
+                  set +x; 
+                fi'
+      - bash -c 'if [[ "${MY_ENVIRONMENT}" == "production" ]]; 
+                  then set -x; 
+                  cp $CODEBUILD_SRC_DIR_ProductionTerraformPlan_output/terraform/*.tfplan $CODEBUILD_SRC_DIR/terraform/; 
+                  set +x; 
+                fi'
       - ls -la
       - ls -la terraform/
 
